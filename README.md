@@ -1,11 +1,10 @@
-# Porsche Sales Intelligence Dashboard & Data Sanitization
+# Dashboard de Inteligência de Vendas Porsche & Higienização de Dados
 
-🔗 **Dashboard Online (GitHub Pages):** [https://SEU-USUARIO.github.io/porsche-sales-dashboard/](https://SEU-USUARIO.github.io/porsche-sales-dashboard/)  
-*(Substitua `SEU-USUARIO` pelo seu nome de usuário no GitHub)*
+🔗 **Dashboard Online (GitHub Pages):** [https://giovanycesar.github.io/porsche-sales-dashboard/](https://giovanycesar.github.io/porsche-sales-dashboard/)  
 
 ---
 
-## Executive Summary:
+## Resumo Executivo:
 
 Dados operacionais de vendas frequentemente chegam em formatos inconsistentes (datas inválidas, preços com símbolos mistos, unidades de quilometragem heterogêneas e erros de digitação), inviabilizando tomadas de decisão confiáveis. Neste projeto, construí um pipeline completo de ponta a ponta: criei um agente de tratamento com regras estritas de validação em Python (`schema.md`), higienizei uma base com 100 transações de veículos Porsche e desenvolvi uma **Dashboard Executiva Interativa em HTML/JS**, inspirada na identidade visual refinada da **Porsche Brasil**.
 
@@ -17,7 +16,7 @@ Após analisar os dados higienizados e responder às principais perguntas de neg
 
 ---
 
-### Business Problem:
+### Problema de Negócio:
 
 Planilhas de vendas brutas acumulavam registros despadronizados que impediam a geração de relatórios precisos no Excel. Sem perguntas de negócio claras, dashboards tornam-se apenas "amontoados de gráficos" sem utilidade prática. 
 
@@ -32,15 +31,13 @@ Para extrair inteligência real dos dados, o projeto foi estruturado em torno de
 
 ---
 
-### Dashboard Preview:
+### Demonstração do Dashboard:
 
-> *Dica: Tire um print da sua tela e salve como `dashboard-preview.png` nesta pasta para que a imagem apareça automaticamente no GitHub.*
-
-![Porsche Sales Dashboard Preview](dashboard-preview.png)
+![Demonstração do Dashboard Porsche](dashboard-preview.png)
 
 ---
 
-### Methodology:
+### Metodologia:
 
 O projeto seguiu um fluxo estruturado em 4 etapas:
 
@@ -55,10 +52,10 @@ flowchart LR
 1. **Definição de Schema & Regras de Sanitização (`schema.md`):**  
    Mapeamento canônico de entrada e saída. Regras estritas para converter moedas despadronizadas, traduzir unidades (milhas vs. KM com fator `1 km = 0.621371 mi`), unificar nomenclaturas de trims da Porsche, validar siglas USPS de estados americanos e converter anomalias calendárias (ex: 30 de fevereiro, 31 de abril) no indicador `INVALID`.
 
-2. **Agente de Tratamento de Dados em Python (`porsche_data_sanitizer.py`):**  
-   Desenvolvimento de script autônomo com `pandas` e `openpyxl`. O agente processa a base bruta mantendo os dados originais e gerando o arquivo `porsche_database_cleaned.xlsx`, com formatação condicional (azul para colunas brutas, verde para sanitizadas e vermelho para valores inválidos).
+2. **Agente de Tratamento de Dados em Python (`python/porsche_data_sanitizer.py`):**  
+   Desenvolvimento de script autônomo com `pandas` e `openpyxl`. O agente processa a base bruta mantendo os dados originais e gerando o arquivo `excel/porsche_database_cleaned.xlsx`, com formatação condicional (azul para colunas brutas, verde para sanitizadas e vermelho para valores inválidos).
 
-3. **Engenharia de Prompt & Geração da Dashboard (`build_dashboard.py`):**  
+3. **Engenharia de Prompt & Geração da Dashboard (`python/build_dashboard.py`):**  
    Utilização de agente de IA com skill de montagem de dashboards para gerar um arquivo único em HTML/CSS/JavaScript nativo (`index.html`), com layout luxuoso baseado no portal da Porsche Brasil, filtros dinâmicos e biblioteca Chart.js integrada.
 
 4. **Publicação no GitHub Pages:**  
@@ -66,11 +63,11 @@ flowchart LR
 
 ---
 
-### Skills & Tecnologias Utilizadas:
+### Habilidades & Tecnologias Utilizadas:
 
 * **Python:** `pandas`, `openpyxl`, `word2number`, manipulação de expressões regulares (`re`), conversão de datas ISO 8601.
 * **Engenharia de Prompt & Agentes de IA:** Desenvolvimento de regras canônicas de sanitização e refinamento iterativo de componentes visuais em linguagem natural.
-* **Data Visualization & Front-end:** HTML5 semântico, CSS3 moderno (paleta oficial Porsche, efeitos de profundidade, glassmorphism), JavaScript ES6+ reativo e Chart.js 4.4.
+* **Visualização de Dados & Front-end:** HTML5 semântico, CSS3 moderno (paleta oficial Porsche, efeitos de profundidade, glassmorphism), JavaScript ES6+ reativo e Chart.js 4.4.
 * **Governança de Dados:** Validação de schemas, tratamento de valores faltantes/inválidos e auditoria de integridade.
 * **Git & GitHub Pages:** Versionamento de código e publicação web serverless.
 
@@ -78,24 +75,44 @@ flowchart LR
 
 ### Agente & Prompts Utilizados:
 
-Neste projeto utilizei a abordagem com **Agente de IA especializado em pipeline de dados e desenvolvimento de interface**, comparando e refinando os resultados por etapas:
-
-#### Prompt 1 — Definição do Schema de Sanitização:
-> *"Crie um arquivo markdown (`schema.md`) contendo a especificação canônica de dados de entrada e saída para a base de vendas da Porsche, contendo regras de normalização para datas ISO, modelos válidos, conversão de moedas, quilometragem em inteiros com conversão de KM para milhas, estados USPS e tratamento de anomalias com `INVALID`."*
-
-#### Prompt 2 — Implementação do Agente Sanitizador:
-> *"Crie um agente em Python que leia o arquivo `porsche_database_raw.xlsx`, aplique as regras do `schema.md` e gere um novo arquivo `porsche_database_cleaned.xlsx` mantendo o arquivo raw intacto. As colunas tratadas devem aparecer imediatamente ao lado de suas respectivas fontes, com cabeçalhos e células estilizados por cores diferenciadas no Excel."*
-
-#### Prompt 3 — Construção da Dashboard Executiva (Refinamento Final):
-> *"Usando o arquivo `porsche_database_cleaned.xlsx`, crie um dashboard executivo em HTML (arquivo único). Requisitos obrigatórios:*  
-> *- Filtros interativos: Famílias de modelos (911, 718, Cayenne, Macan, Panamera, Taycan), Modelo específico, Cidade, Ano do modelo e Métodos de pagamento.*  
-> *- Respostas visuais e em indicadores para as 3 perguntas de negócio: principais modelos por cidade, ano com maior saída e insights de popularidade por praça.*  
-> *- UI/UX elegante, minimalista e refinado baseado no site oficial da Porsche Brasil (`https://www.porsche.com/brazil/pt/`), com paleta Obsidian Black, toques de Porsche Carmine Red e fontes elegantes.*  
-> *- Gráficos interativos (Chart.js), tabela com paginação e busca instantânea, e botão de exportação para CSV."*
+Neste projeto, utilizei a abordagem com **Agente de IA especializado em pipeline de dados e desenvolvimento de software**, refinando as instruções por etapas iterativas para garantir rigor analítico e fidelidade visual:
 
 ---
 
-### Results & Business Recommendations:
+#### 🔹 Etapa 1: Definição do Schema de Sanitização
+* **Objetivo:** Estabelecer um contrato canônico de dados para mapear tipos, formatos válidos e regras de conversão.
+* **Prompt Utilizado:**
+> *"Crie um arquivo Markdown (`schema.md`) contendo a especificação canônica de dados de entrada e saída para a base de vendas da Porsche. Inclua regras formais de normalização para datas no padrão ISO 8601 (`YYYY-MM-DD`), padronização dos modelos e trims válidos da marca, limpeza de valores monetários em USD, conversão de quilometragem de quilômetros para milhas (fator de conversão `1 km = 0,621371 mi`), validação de estados conforme a sigla oficial USPS de duas letras e tratamento rigoroso de anomalias com a marcação `INVALID`."*
+
+---
+
+#### 🔹 Etapa 2: Implementação e Refinamento do Agente Sanitizador (Python)
+* **Objetivo:** Criar um script automatizado com `pandas` e `openpyxl` que aplique as regras e formate a planilha Excel preservando os dados brutos.
+* **Prompt Utilizado:**
+> *"Crie um agente em Python que leia o arquivo `porsche_database_raw.xlsx` e aplique as regras definidas no `schema.md` para gerar um novo arquivo tratado (`porsche_database_cleaned.xlsx`), mantendo o arquivo bruto original intacto.*  
+> *Requisitos de formatação:*  
+> *1. Insira as colunas sanitizadas imediatamente após as suas respectivas colunas de origem;*  
+> *2. Aplique formatação condicional com estilos e cores distintas no Excel para diferenciar visualmente as colunas originais (em azul escuro/claro), as colunas tratadas (em verde escuro/claro) e destaque os registros inválidos com fundo vermelho claro e texto em negrito."*
+* **Evolução do Prompt:** A instrução inicial previa apenas a limpeza básica; foi refinada para exigir a preservação estrita da base original (*raw*), o posicionamento intercalado das colunas e a estilização condicional via `openpyxl`.
+
+---
+
+#### 🔹 Etapa 3: Construção e Refinamento da Dashboard Executiva (HTML/JS)
+* **Objetivo:** Transformar a base tratada em uma interface analítica interativa de arquivo único (`index.html`), pronta para publicação no GitHub Pages.
+* **Prompt Utilizado:**
+> *"Com base no arquivo `porsche_database_cleaned.xlsx`, gere uma dashboard executiva interativa em HTML (arquivo único e autocontido). Requisitos obrigatórios:*  
+> *- **Filtros Dinâmicos:** Seletor rápido por família de veículos (911, 718, Cayenne, Macan, Panamera e Taycan), filtros detalhados por modelo específico, cidade, ano do modelo e método de pagamento, além de busca textual global e botão de redefinição;*  
+> *- **Perguntas de Negócio & KPIs:** Módulos visuais e indicadores que respondam diretamente:*  
+> *  1. Quais os principais modelos de carros vendidos por cidade?*  
+> *  2. Qual o ano de modelo de carro que mais saiu no período?*  
+> *  3. Quais os insights de carros populares de vendas com base nos dados de cada cidade?*  
+> *- **Identidade Visual & UI/UX:** Design elegante, refinado e minimalista inspirado no portal oficial da Porsche Brasil (`https://www.porsche.com/brazil/pt/`), utilizando a paleta Obsidian Black, detalhes em Porsche Carmine Red (`#d5001c`), tipografia geométrica premium e cartões em glassmorphism;*  
+> *- **Recursos Analíticos:** Gráficos interativos com Chart.js, tabela transacional com ordenação e paginação, e funcionalidade de exportação dos dados filtrados para CSV."*
+* **Evolução do Prompt:** O prompt evoluiu de uma solicitação genérica de gráficos para um briefing técnico detalhado, com parâmetros estéticos estritos da Porsche e amarração direta entre as perguntas de negócio e os componentes de UI.
+
+---
+
+### Resultados & Recomendações de Negócio:
 
 A aplicação da dashboard permitiu que gestores e analistas filtrem qualquer fatia de mercado instantaneamente, eliminando relatórios manuais em planilhas.
 
@@ -126,19 +143,19 @@ A aplicação da dashboard permitiu que gestores e analistas filtrem qualquer fa
 
 ### Estrutura de Arquivos do Repositório:
 
-| Arquivo | Descrição |
+| Arquivo / Pasta | Descrição |
 |---|---|
-| [`index.html`](index.html) | Dashboard interativo completo pronto para exibição no GitHub Pages |
-| [`porsche_database_cleaned.xlsx`](porsche_database_cleaned.xlsx) | Base higienizada com colunas tratadas e estilização de cores |
-| [`porsche_database_raw.xlsx`](porsche_database_raw.xlsx) | Base de dados bruta original com 100 registros |
-| [`porsche_data_sanitizer.py`](porsche_data_sanitizer.py) | Script de sanitização que executa o pipeline de regras |
+| [`index.html`](index.html) | Dashboard executivo interativo pronto para exibição no GitHub Pages |
 | [`schema.md`](schema.md) | Dicionário de dados, mapeamento canônico e regras de higienização |
-| [`build_dashboard.py`](build_dashboard.py) | Script de automação que constrói a dashboard HTML |
-| [`_dashboard_data.json`](_dashboard_data.json) | Dados higienizados estruturados em formato JSON |
+| [`excel/porsche_database_cleaned.xlsx`](excel/porsche_database_cleaned.xlsx) | Base higienizada com colunas tratadas e estilização de cores |
+| [`excel/porsche_database_raw.xlsx`](excel/porsche_database_raw.xlsx) | Base de dados bruta original com 100 registros |
+| [`python/porsche_data_sanitizer.py`](python/porsche_data_sanitizer.py) | Script do agente de sanitização que executa o pipeline de regras |
+| [`python/build_dashboard.py`](python/build_dashboard.py) | Script de automação que constrói a dashboard HTML |
+| [`json/_dashboard_data.json`](json/_dashboard_data.json) | Dados higienizados estruturados em formato JSON |
 
 ---
 
-### Next Steps:
+### Próximos Passos:
 
 1. **Aprimoramento Geográfico:** Incluir visualização em mapa de calor (Choropleth Map) por Estado (USPS).
 2. **Métricas de Conversão de Entrega:** Desenvolver funil logístico analisando o tempo decorrido entre status `In Transit` e `Delivered`.
@@ -148,4 +165,4 @@ A aplicação da dashboard permitiu que gestores e analistas filtrem qualquer fa
 
 ### Autor
 
-Projeto desenvolvido como parte do desafio prático **Criando Agentes de Tratamento de Dados** da [Digital Innovation One (DIO)](https://www.dio.me/).
+Projeto desenvolvido por **Giovany César** como parte do desafio prático **Criando Agentes de Tratamento de Dados** da [Digital Innovation One (DIO)](https://www.dio.me/).

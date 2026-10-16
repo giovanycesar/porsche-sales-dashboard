@@ -1190,10 +1190,6 @@ html_content = f'''<!DOCTYPE html>
         </div>
       </div>
       <div class="header-status">
-        <div class="status-pill">
-          <span class="status-dot"></span>
-          Base Higienizada
-        </div>
         <button class="btn-export" onclick="exportFilteredCSV()">
           <i class="fa-solid fa-file-arrow-down"></i> Exportar CSV
         </button>
@@ -1295,14 +1291,14 @@ html_content = f'''<!DOCTYPE html>
         </div>
       </div>
 
-      <div class="kpi-card gold-kpi">
+      <div class="kpi-card gold-kpi" id="kpi-year-card">
         <div class="kpi-top">
-          <span class="kpi-label">Ano Campeão de Vendas</span>
-          <div class="kpi-icon"><i class="fa-solid fa-trophy"></i></div>
+          <span class="kpi-label" id="kpi-year-label">Ano Campeão de Vendas</span>
+          <div class="kpi-icon" id="kpi-year-icon"><i class="fa-solid fa-trophy"></i></div>
         </div>
         <div class="kpi-value" id="kpi-top-year">-</div>
-        <div class="kpi-subtext">
-          Liderança com <span class="kpi-highlight" id="kpi-top-year-count">0</span> veículos vendidos
+        <div class="kpi-subtext" id="kpi-year-subtext">
+          <span id="kpi-year-subtext-prefix">Liderança com</span> <span class="kpi-highlight" id="kpi-top-year-count">0</span> veículos vendidos
         </div>
       </div>
 
@@ -1806,6 +1802,31 @@ html_content = f'''<!DOCTYPE html>
       document.getElementById('kpi-top-model').textContent = topModel;
       document.getElementById('kpi-top-model-units').textContent = topModelCount;
       document.getElementById('kpi-avg-mileage').textContent = avgMiles.toLocaleString('en-US') + ' mi';
+
+      // Dinâmica do card: "Ano Campeão de Vendas" vs "Ano de Vendas"
+      const selYearElem = document.getElementById('filter-year');
+      const selYear = selYearElem ? selYearElem.value : 'ALL';
+      const yearCard = document.getElementById('kpi-year-card');
+      const yearLabel = document.getElementById('kpi-year-label');
+      const yearIcon = document.getElementById('kpi-year-icon');
+      const yearSubtextPrefix = document.getElementById('kpi-year-subtext-prefix');
+
+      // O ano campeão histórico geral é 2024
+      const isChampion = (topYear === '2024');
+
+      if (selYear !== 'ALL' && !isChampion) {{
+        // Ano filtrado específico que NÃO é o campeão (ex: 2020, 2021, etc.)
+        if (yearLabel) yearLabel.textContent = 'Ano de Vendas';
+        if (yearIcon) yearIcon.innerHTML = '<i class="fa-solid fa-calendar-days"></i>';
+        if (yearSubtextPrefix) yearSubtextPrefix.textContent = 'Total de';
+        if (yearCard) yearCard.classList.remove('gold-kpi');
+      }} else {{
+        // "Todos os anos" ou o próprio ano campeão (2024)
+        if (yearLabel) yearLabel.textContent = 'Ano Campeão de Vendas';
+        if (yearIcon) yearIcon.innerHTML = '<i class="fa-solid fa-trophy"></i>';
+        if (yearSubtextPrefix) yearSubtextPrefix.textContent = 'Liderança com';
+        if (yearCard) yearCard.classList.add('gold-kpi');
+      }}
     }}
 
     // Render Question 1: City Explorer Widget
@@ -1892,8 +1913,22 @@ html_content = f'''<!DOCTYPE html>
         }}
       }}
 
-      document.getElementById('winner-year-display').textContent = maxYear;
-      document.getElementById('winner-year-title').textContent = `Ano ${{maxYear}} Lidera com ${{maxCount}} Unidades`;
+      const isChampionYear = (maxYear === '2024');
+      const selYearElem2 = document.getElementById('filter-year');
+      const selYearFilter = selYearElem2 ? selYearElem2.value : 'ALL';
+      const winnerDisplay = document.getElementById('winner-year-display');
+      const winnerTitle = document.getElementById('winner-year-title');
+      const winnerDesc = document.getElementById('winner-year-desc');
+
+      if (winnerDisplay) winnerDisplay.textContent = maxYear;
+
+      if (selYearFilter !== 'ALL' && !isChampionYear) {{
+        if (winnerTitle) winnerTitle.textContent = `Ano de Vendas: ${{maxYear}} (${{maxCount}} Unidades)`;
+        if (winnerDesc) winnerDesc.textContent = `Visualizando o recorte consolidado para o ano-modelo ${{maxYear}}. O ano campeão histórico geral da Porsche na base é 2024, com 29 vendas.`;
+      }} else {{
+        if (winnerTitle) winnerTitle.textContent = `Modelo Ano 2024 é o Grande Líder`;
+        if (winnerDesc) winnerDesc.textContent = `Com a maior concentração de emplacamentos e vendas recentes (29 veículos), consolidando a preferência por tecnologia de ponta e modelos do ano corrente.`;
+      }}
 
       const barsContainer = document.getElementById('year-distribution-bars');
       barsContainer.innerHTML = '';
