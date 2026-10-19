@@ -39,27 +39,30 @@ Para extrair inteligência real dos dados, o projeto foi estruturado em torno de
 
 ### Metodologia:
 
-O projeto seguiu um fluxo estruturado em 4 etapas:
+O projeto seguiu um fluxo estruturado em 5 etapas:
 
 ```mermaid
 flowchart LR
-    A["1. Base Raw (.xlsx)<br>Dados não-estruturados"] --> B["2. Agente Sanitizador<br>Python + Schema Rules"]
-    B --> C["3. Base Cleaned (.xlsx)<br>Colunas auditadas e coloridas"]
-    C --> D["4. Dashboard HTML/JS<br>Visual Porsche Brasil"]
+    A["1. Base Raw (.xlsx)<br>Dados não-estruturados"] --> B["2. Schema Canônico<br>Regras de validação"]
+    B --> C["3. Agente Sanitizador<br>Pipeline Python & Excel"]
+    C --> D["4. Dashboard Executiva<br>HTML/JS e Visual Porsche"]
     D --> E["5. Deploy no GitHub Pages<br>Acesso público universal"]
 ```
 
-1. **Definição de Schema & Regras de Sanitização (`schema.md`):**  
-   Mapeamento canônico de entrada e saída. Regras estritas para converter moedas despadronizadas, traduzir unidades (milhas vs. KM com fator `1 km = 0.621371 mi`), unificar nomenclaturas de trims da Porsche, validar siglas USPS de estados americanos e converter anomalias calendárias (ex: 30 de fevereiro, 31 de abril) no indicador `INVALID`.
+1. **Ingestão da Base Bruta (`excel/porsche_database_raw.xlsx`):**  
+   Diagnóstico inicial de 100 registros com discrepâncias de formatação em moedas, unidades mistas de quilometragem (milhas vs. quilômetros) e inconsistências de calendário.
 
-2. **Agente de Tratamento de Dados em Python (`python/porsche_data_sanitizer.py`):**  
-   Desenvolvimento de script autônomo com `pandas` e `openpyxl`. O agente processa a base bruta mantendo os dados originais e gerando o arquivo `excel/porsche_database_cleaned.xlsx`, com formatação condicional (azul para colunas brutas, verde para sanitizadas e vermelho para valores inválidos).
+2. **Definição de Schema & Regras Canônicas (`schema.md`):**  
+   Mapeamento de tipos de entrada e saída. Regras estritas para converter moedas despadronizadas, traduzir unidades (`1 km = 0,621371 mi`), unificar nomenclaturas de trims da Porsche, validar siglas USPS de estados americanos e converter anomalias calendárias (ex: 30 de fevereiro, 31 de abril) no indicador `INVALID`.
 
-3. **Engenharia de Prompt & Geração da Dashboard (`python/build_dashboard.py`):**  
-   Utilização de agente de IA com skill de montagem de dashboards para gerar um arquivo único em HTML/CSS/JavaScript nativo (`index.html`), com layout luxuoso baseado no portal da Porsche Brasil, filtros dinâmicos e biblioteca Chart.js integrada.
+3. **Agente Sanitizador em Python (`python/porsche_data_sanitizer.py`):**  
+   Execução de script autônomo com `pandas` e `openpyxl`. O agente processa a base bruta mantendo os dados originais intactos e gerando o arquivo `excel/porsche_database_cleaned.xlsx`, com formatação condicional (azul para colunas brutas, verde para sanitizadas e vermelho para valores inválidos).
 
-4. **Publicação no GitHub Pages:**  
-   Subida do repositório público e deploy contínuo via GitHub Pages.
+4. **Construção da Dashboard Executiva (`index.html` via `python/build_dashboard.py`):**  
+   Geração de interface em arquivo único com Chart.js, filtros dinâmicos e identidade visual inspirada no portal oficial da Porsche Brasil.
+
+5. **Deploy & Publicação no GitHub Pages:**  
+   Subida do repositório público e deploy contínuo via GitHub Pages com link de acesso universal e responsivo.
 
 ---
 
