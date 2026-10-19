@@ -33,7 +33,7 @@ Para extrair inteligência real dos dados, o projeto foi estruturado em torno de
 
 ### Demonstração do Dashboard:
 
-![Demonstração do Dashboard Porsche](dashboard-preview.png)
+![Demonstração do Dashboard Porsche](png/dashboard-preview.png)
 
 ---
 
@@ -143,12 +143,30 @@ A aplicação da dashboard permitiu que gestores e analistas filtrem qualquer fa
 
 ### Estrutura de Arquivos do Repositório:
 
+```text
+porsche-sales-dashboard/
+├── 📄 index.html                       # Dashboard no ar (raiz para o GitHub Pages)
+├── 📄 README.md                        # Documentação executiva completa do projeto
+├── 📄 schema.md                        # Regras e mapeamento canônico de sanitização
+├── 📁 excel/
+│   ├── porsche_database_raw.xlsx       # Base bruta original (100 registros)
+│   └── porsche_database_cleaned.xlsx   # Base higienizada com colunas coloridas
+├── 📁 json/
+│   └── _dashboard_data.json            # Dados higienizados estruturados em JSON
+├── 📁 png/
+│   └── dashboard-preview.png           # Captura de tela da dashboard em operação
+└── 📁 python/
+    ├── porsche_data_sanitizer.py       # Agente autônomo de higienização de dados
+    └── build_dashboard.py              # Script de automação e compilação do dashboard
+```
+
 | Arquivo / Pasta | Descrição |
 |---|---|
 | [`index.html`](index.html) | Dashboard executivo interativo pronto para exibição no GitHub Pages |
 | [`schema.md`](schema.md) | Dicionário de dados, mapeamento canônico e regras de higienização |
 | [`excel/porsche_database_cleaned.xlsx`](excel/porsche_database_cleaned.xlsx) | Base higienizada com colunas tratadas e estilização de cores |
 | [`excel/porsche_database_raw.xlsx`](excel/porsche_database_raw.xlsx) | Base de dados bruta original com 100 registros |
+| [`png/dashboard-preview.png`](png/dashboard-preview.png) | Captura de tela da dashboard utilizada na demonstração |
 | [`python/porsche_data_sanitizer.py`](python/porsche_data_sanitizer.py) | Script do agente de sanitização que executa o pipeline de regras |
 | [`python/build_dashboard.py`](python/build_dashboard.py) | Script de automação que constrói a dashboard HTML |
 | [`json/_dashboard_data.json`](json/_dashboard_data.json) | Dados higienizados estruturados em formato JSON |
